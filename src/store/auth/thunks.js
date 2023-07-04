@@ -14,6 +14,7 @@ export const  startGoogleSignIn = () => {
     return async ( dispatch ) => {
 
        dispatch(checkingCredentials() );
+       
        const result = await signInWhithGoogle();
        console.log(result);
 

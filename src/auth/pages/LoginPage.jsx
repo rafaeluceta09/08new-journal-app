@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { Google } from '@mui/icons-material';
@@ -8,8 +8,11 @@ import { chekingAuthentication, startGoogleSignIn } from '../../store/auth';
 
 export const LoginPage = () => {
 
+  const { state } =  useSelector( (state) => state.auth );
   const { email, password, onInputChange } = useForm({ email : 'suceta@goplaca.com', password : '12345'  } );
   const dispath = useDispatch();
+
+  
 
 
   const onSubmitForm = (e) => {

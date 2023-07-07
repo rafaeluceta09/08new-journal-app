@@ -12,8 +12,6 @@ export const LoginPage = () => {
   const { email, password, onInputChange } = useForm({ email : 'suceta@goplaca.com', password : '12345'  } );
   const dispath = useDispatch();
 
-  
-
 
   const onSubmitForm = (e) => {
     e.preventDefault();

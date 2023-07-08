@@ -1,21 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Grid, Link, TextField, Typography } from '@mui/material';
+import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { Google } from '@mui/icons-material';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks';
-import { chekingAuthentication, startGoogleSignIn } from '../../store/auth';
+import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth';
 
 export const LoginPage = () => {
 
-  const { state } =  useSelector( (state) => state.auth );
-  const { email, password, onInputChange } = useForm({ email : 'suceta@goplaca.com', password : '12345'  } );
+  const { state, errorMessage } =  useSelector( (state) => state.auth );
+  const { email, password, onInputChange } = useForm({ email : '', password : ''  } );
+
   const dispath = useDispatch();
 
 
   const onSubmitForm = (e) => {
     e.preventDefault();
-    dispath(chekingAuthentication(email, password));
+    dispath(startLoginWithEmailPassword({ email, password }));
   }
 
   const onGoogleSignIn= () =>{
@@ -50,6 +51,16 @@ export const LoginPage = () => {
                 value={ password }
                 fullWidth
               />
+            </Grid>
+            <Grid container>
+              <Grid 
+                display={ !!errorMessage ? '' : 'none' }
+                item xs={ 12 } >
+                <Alert
+                  severity='error' >
+                    { errorMessage }
+                </Alert>
+              </Grid>
             </Grid>
             
             <Grid container spacing={ 2 } sx={{ mb: 2, mt: 1 }}>

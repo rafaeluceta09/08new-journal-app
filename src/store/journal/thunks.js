@@ -74,7 +74,7 @@ export const startUploadImage = ( files ) => {
 
         dispatch(setSaving());
 
-        const result = await uploadImage(files);
+        const result = await uploadImage(files[0]);
     }
 
 }

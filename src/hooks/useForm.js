@@ -15,7 +15,6 @@ export const useForm = ( initialState = {}, requestValidations={} ) => {
         setFormState(initialState);
     },[initialState])
 
-
     const isFormValid = useMemo( () => {
         for(let formItem of Object.keys(formValidations)){
 
@@ -24,7 +23,6 @@ export const useForm = ( initialState = {}, requestValidations={} ) => {
         return true;
     },[formValidations])
     
-
     const onInputChange = ({ target }) => {
         const { name, value } = target;
         setFormState({
@@ -32,7 +30,6 @@ export const useForm = ( initialState = {}, requestValidations={} ) => {
             [ name ]: value
         });
     }
-
 
     const checkFormValidations = () =>{
         const checkValidations ={ } ;
@@ -42,9 +39,7 @@ export const useForm = ( initialState = {}, requestValidations={} ) => {
             checkValidations[`${itemForm}Valid`] = fn(formState[itemForm]) ? null : errorMessage;
         }
         setformValidations(checkValidations);
-
     }
-
 
     const onResetForm = () => {
         setFormState( initialState );

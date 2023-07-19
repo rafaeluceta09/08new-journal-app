@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react'
 import { Grid, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import { Description, TurnedInNot } from '@mui/icons-material'
+import {  TurnedInNot } from '@mui/icons-material'
 import { useDispatch } from 'react-redux'
-import { startActiveNote } from '../../store/journal/thunks'
 import { setActiveNote } from '../../store/journal/journalSlice'
 
-export const SideBarItem = ({  title , description, id, date  }) => {
+export const SideBarItem = ({  title , description, id, date, imageUrls=[]  }) => {
     
     const dispatch = useDispatch();
 
@@ -22,7 +21,7 @@ export const SideBarItem = ({  title , description, id, date  }) => {
         //esto es una forma 
        // dispatch(startActiveNote(id));
         //esto es otra forma
-        dispatch(setActiveNote({title, description, id, date , imageUrls:[] }))
+        dispatch(setActiveNote({title, description, id, date , imageUrls }))
 
     }
 

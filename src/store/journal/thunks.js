@@ -1,6 +1,6 @@
-import { doc, collection, setDoc } from 'firebase/firestore/lite';
+import { doc, collection, setDoc, deleteDoc } from 'firebase/firestore/lite';
 import { FirestoreDB } from '../../firebase/config';
-import { addNewEmptyNote, setActiveNote, setNote, setSavingNewNote, updateNote, setSaving } from './journalSlice';
+import { addNewEmptyNote, setActiveNote, setNote, setSavingNewNote, updateNote, setSaving, setImageToActiveNote, deleteNoteById } from './journalSlice';
 import { loadNotes } from '../../helper/loadNotes';
 import { uploadImage } from '../../helper';
 
@@ -10,7 +10,8 @@ export const startNewNote = () =>{
         let newNote  = {
             title : 'note 01',
             description : 'nota de prueba 01',
-            date : new Date().getTime()
+            date : new Date().getTime(),
+            imageUrls : []
         }
         const { uid } = getState().auth;
 
@@ -43,6 +44,7 @@ export const startActiveNote =(id ='') =>{
 
     return ( dispatch, getState ) =>{
         const { notes } = getState().journal;
+        
         let note = notes.find(n => n.id === id);
 
         dispatch(setActiveNote(note));
@@ -73,9 +75,37 @@ export const startUploadImage = ( files ) => {
     return async ( dispatch ) => {
 
         dispatch(setSaving());
+        let filesToPromise = [];
 
-        const result = await uploadImage(files[0]);
+        for (let file of files ) {
+            filesToPromise.push( await uploadImage( file ) )   
+            
+        }
+
+        //console.log(filesToPromise);
+        const result = await Promise.all(filesToPromise); //como quiera con este codigo y sin el hace lo mismo
+
+        
+        dispatch( setImageToActiveNote( result ) );
+       // console.log(result);
+
+        //const result = await uploadImage(files[0]);
     }
 
 }
 
+
+export const startDeleteNote = ()=>{
+    return async (dispatch , getState)=>{
+
+        let { uid } =getState().auth;
+        let { activeNote } = getState().journal;
+
+        let refDoc = doc(FirestoreDB,`${uid}/journal/notes/${activeNote.id}`);
+        let result = await deleteDoc(refDoc); 
+
+        dispatch(deleteNoteById(activeNote.id));
+
+    }
+
+}

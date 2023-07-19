@@ -19,12 +19,9 @@ export const uploadImage = async (file) =>{
         // if(!resp.ok) throw new Error('ERROR no se pudo cargar la imagen al servidor');
 
         let result = await resp.json();
-        console.log(result);
-
-        return{
-            ok: true,
-            secure_url : result.secure_url
-        }
+    
+        return result.secure_url;
+        
     
         
     } catch (error) {

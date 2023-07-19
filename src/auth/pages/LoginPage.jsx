@@ -6,10 +6,11 @@ import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks';
 import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth';
 
+const initialState = { email : '', password : ''  } 
 export const LoginPage = () => {
 
   const { state, errorMessage } =  useSelector( (state) => state.auth );
-  const { email, password, onInputChange } = useForm({ email : '', password : ''  } );
+  const { email, password, onInputChange } = useForm(initialState);
 
   const dispath = useDispatch();
 

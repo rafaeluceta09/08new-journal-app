@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
-import { NoEncryption, SaveOutlined, Upload, UploadFile, UploadFileOutlined } from '@mui/icons-material';
+import { DeleteOutline, NoEncryption, SaveOutlined, Upload, UploadFile, UploadFileOutlined } from '@mui/icons-material';
 import { ImageGallery } from '../components'
 
 import Swal from 'sweetalert2';
@@ -9,7 +9,8 @@ import 'sweetalert2/dist/sweetalert2.css'
 
 import { useForm } from '../../hooks/useForm';
 import { clearMessageSaved, setActiveNote, updateNote } from '../../store/journal/journalSlice';
-import { startUpdateNote, startUploadImage } from '../../store/journal';
+import { startDeleteNote, startUpdateNote, startUploadImage } from '../../store/journal';
+import { red } from '@mui/material/colors';
 
 
 
@@ -42,19 +43,21 @@ export const NoteView = () => {
 
     const fileInputRef = useRef();
     
-
     const onSaveNote = () =>{
         console.log('buttotn saverd punchado');
         dispath(startUpdateNote());
     }
 
-    const onFileInputChange = ({ target }) =>{
-        
+    const onFileInputChange = ({ target }) =>{       
         if(target.files === 0 ) return;
-
         dispath(startUploadImage(target.files));
-
     } 
+
+    const onDeleteNote = ( ) =>{
+        
+        dispath(startDeleteNote());
+
+    }
 
 
 
@@ -117,9 +120,18 @@ export const NoteView = () => {
                     minRows={ 5 }
                 />
             </Grid>
+            <Grid container justifyContent={ 'end' } >                
+                <IconButton 
+                sx={{ color: 'red' }}
+                onClick={onDeleteNote}
+                >
+                    Delete
+                    <DeleteOutline />
+                </IconButton>
+            </Grid>
 
             {/* Image gallery */}
-            <ImageGallery />
+            <ImageGallery images ={ activeNote.imageUrls } />
 
         </Grid>
     )
